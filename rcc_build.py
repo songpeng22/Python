@@ -1,5 +1,6 @@
 #rcc_build.py
 import os
+import sys
 
 source_path = "skin"
 source_name = "skin"
@@ -15,9 +16,29 @@ print("mkdir ret:",ret)
 # if 1
 
 for index in range(1,3):
-    print("index:",index)
+    print("index:",index)    
+    folder_name = source_path + str(index)
+    # qrc part
+    python_path = source_path + str(index) + "/" + "qrc_build.py"
+    print("python_path:",python_path)
+    current_path = os.path.dirname(sys.argv[0])
+    print( "os.path.dirName:",os.path.dirname(sys.argv[0]) )
+    joinStr = os.path.join( current_path , folder_name ,"qrc_build.py" )
+    joinStr = "\"" + joinStr + "\""
+    print( "joinStr:",joinStr )
+    command = "python3 " + joinStr
+    print("command:",command)
+    joinStr = joinStr.replace( "\\","\\\\" )
+    print( "joinStr with \\\\:",joinStr )
+    # unicoe / raw string
+#    joinStr.encode('unicode_escape')
+    # exec() hard to use even when I put a hand write path exec(r"D:\Test\qrc_build.py"), so choose os.system instead
+#    ret = exec(joinStr)
+    ret = os.system( command )
+    print("exec ret:",ret)    
+    # rcc part
     info = "src_path" + str(index) + ":"
-    src_path = source_path + str(index) + "/" + source_name + ".qrc"    
+    src_path = folder_name + "/" + source_name + ".qrc"    
     print(info,src_path)
     tar_path = target_path + target_name + str(index) + ".rcc"
     print("tar_path",str(index), ":",tar_path)
@@ -29,6 +50,7 @@ for index in range(1,3):
     print("command:",command2)
     ret = os.system( command2 )
     print("cp ret:",ret)
+
 
 # else 
 

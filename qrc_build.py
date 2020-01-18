@@ -3,43 +3,33 @@
 import glob
 import os, sys
 
+# current directory
 dir_path = os.path.dirname(os.path.realpath(__file__))
-print ( "current path:", dir_path )
-print ( "current path length:", len(dir_path) )
-print ( "char at end:", dir_path[len(dir_path)-1:len(dir_path)])
 last_char = dir_path[len(dir_path)-1:len(dir_path)]
 if last_char != "\\":
    dir_path = dir_path + "\\"
 print ( "current path added \:", dir_path )
 
-# planA
-# print(glob.glob("c:\*.txt"))
-
-# planB
-# 打开文件
-path = "C:/"
+# enum file in folder which contains *.qml file
 dirs = os.listdir( dir_path )
 print( dirs )
 
-# 输出所有文件和文件夹
-for file in dirs:
-   print ( file )
-
-# 打开一个文件
-fo = open("main.qrc", "w+")
-print ( "文件名: ", fo.name )
-print ( "是否已关闭 : ", fo.closed )
-print ( "访问模式 : ", fo.mode )
-# print ( "末尾是否强制加空格 : ", fo.softspace )
+# generate qrc file from file list
+current_path = os.path.dirname(sys.argv[0])
+join_path = os.path.join( current_path,"skin.qrc" )
+print( "os.path.dirName:",current_path )
+print( "open this join_path to write:",join_path )
+fo = open( join_path, "w+") # w+ to overwrite old file while running
 
 fo.write( "<RCC>\n")
 fo.write( "\t" + "<qresource prefix=\"/\">\n")
 for file in dirs:
-   if -1 != file.find(".qrc"):
+   if -1 != file.find(".conf"):
+      fo.write( "\t" + "<file>" + file + "</file>" + "\n" )
+for file in dirs:
+   if -1 != file.find(".qml"):
       fo.write( "\t" + "<file>" + file + "</file>" + "\n" )
 fo.write( "\t" + "</qresource>\n")   
 fo.write( "</RCC>\n")
 
-
-# 关闭打开的文件
 fo.close()
