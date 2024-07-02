@@ -1,7 +1,7 @@
 from icrawler.builtin import BaiduImageCrawler 
 from icrawler.builtin import BingImageCrawler 
 from icrawler.builtin import GoogleImageCrawler
-from icrawler.utils import ProxyPool
+from icrawler.utils import ProxyPool,Proxy
 
 """
 parser_threads：解析器线程数目，最大为cpu数目
@@ -11,67 +11,76 @@ keyword:浏览器搜索框输入的关键词
 max_num:最大下载图片数目
 """
 
-#'药盒 三期'
-#'medicine box production date'
-#'药盒 生产批号'
+#batch MFG EXP
+#生产日期 保质期 批号
+#药盒 三期
+#medicine box production date
+#药盒 生产批号
+#medicine box LOT
+#tranquillonin - 安定宁'
+#Flufloxacin - 氟氧沙星
+#Tadalafil  - 他达拉非
+#金柴清热颗粒 日期
 
-
-
+#定制爬虫
 """
+"""
+#class MyCrawler(BingImageCrawler):
+#class MyCrawler(GoogleImageCrawler):
+#class MyCrawler(BaiduImageCrawler):
+class MyCrawler(BaiduImageCrawler):
+    def set_proxy_pool(self):
+        self.proxy_pool = ProxyPool()
+        #self.proxy_pool.scan(region='overseas', expected_num=10) # ERR
+        self.proxy_pool.add_proxy(Proxy('http://127.0.0.1:7890', 'https')) # OK
+        #self.proxy_pool.add_proxy(Proxy('http://192.168.10.77:7890', 'https')) # OK
+        #self.proxy_pool.default_scan(region='overseas', expected_num=10, out_file='proxies.json')
 
-#必应图片爬虫
-bing_storage = {'root_dir': 'E:\\Python\\Python501_scraping_baidu_images\\ICrawlerImages\\bing'}
-bing_crawler = BingImageCrawler(parser_threads=2,
+my_storage = {'root_dir': 'E:\\Python\\Py501_scraping_baidu_images\\images'}
+my_crawler = MyCrawler(parser_threads=4, 
                                 downloader_threads=4, 
-                                storage=bing_storage)
-bing_crawler.crawl(keyword='药盒 生产批号',
-                   max_num=500)
+                                storage=my_storage)
+my_crawler.crawl(keyword='清热颗粒 日期', 
+                     max_num=200)
 
-"""
 """
 
 #百度图片爬虫
-baidu_storage = {'root_dir': 'E:\\Python\\Python501_scraping_baidu_images\\ICrawlerImages\\baidu'}
+baidu_storage = {'root_dir': 'E:\\Python\\Py501_scraping_baidu_images\\\images'}
 
 baidu_crawler = BaiduImageCrawler(parser_threads=2,
                                   downloader_threads=4,
                                   storage=baidu_storage)
-baidu_crawler.crawl(keyword='生产日期', 
+baidu_crawler.crawl(keyword='他达拉非 生产日期', 
                     max_num=500)
 """
+"""
+
+#必应图片爬虫
+bing_storage = {'root_dir': 'E:\\Python\\Py501_scraping_baidu_images\\images'}
+bing_crawler = BingImageCrawler(parser_threads=2,
+                                downloader_threads=4, 
+                                storage=bing_storage)
+bing_crawler.crawl(keyword='medicine box LOT',
+                   max_num=500)
+"""
+
 
 """
-"""
+
 #谷歌图片爬虫
-google_storage = {'root_dir': 'E:\\Python\\Python501_scraping_baidu_images\\ICrawlerImages\\google'}
+google_storage = {'root_dir': 'E:\\Python\\Py501_scraping_baidu_images\\images'}
 google_crawler = GoogleImageCrawler(parser_threads=4, 
                                    downloader_threads=4, 
                                    storage=google_storage)
-google_crawler.crawl(keyword='药 生产批号', 
-                     max_num=500)
-
-
-#定制爬虫
-"""
-
-class MyCrawler(GoogleImageCrawler):
-    def set_proxy_pool(self):
-        self.proxy_pool = ProxyPool()
-        #self.proxy_pool.scan(region='overseas', expected_num=10)
-        self.proxy_pool.default_scan(region='overseas', expected_num=10,
-                                 out_file='proxies.json')
-
-my_storage = {'root_dir': 'E:\\Python\\Python501_scraping_baidu_images\\ICrawlerImages\\images'}
-my_crawler = MyCrawler(parser_threads=4, 
-                                downloader_threads=4, 
-                                storage=my_storage)
-my_crawler.crawl(keyword='药盒 三期', 
+google_crawler.crawl(keyword='medicine box LOT', 
                      max_num=500)
 """
+
 """
 def main():
     crawler = MyCrawler(
-        downloader_threads=2, storage={'root_dir': 'E:\\Python\\Python501_scraping_baidu_images\\ICrawlerImages\\images'})
+        downloader_threads=2, storage={'root_dir': 'E:\\Python\\Python501_scraping_baidu_images\\images'})
     crawler.crawl(keyword='药盒 三期', max_num=10)
 
 

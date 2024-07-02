@@ -80,8 +80,8 @@ if __name__ == "__main__":
     #url = "http://www.google.com"
     #print(requests.get(url, proxies=proxies).content)
     urllib.request.getproxies()     
-    keyword = '药盒 三期'
-    page_num = 1000
+    keyword = '他达拉非 三期'
+    page_num = 100
     page_num = int(page_num)
-    save_dir = '.\\图片\\'+keyword
+    save_dir = '.\\images\\'+keyword
     get_images_from_baidu(keyword, page_num, save_dir)
