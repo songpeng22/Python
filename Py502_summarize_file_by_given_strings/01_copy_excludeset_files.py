@@ -2,18 +2,15 @@ import os
 import shutil
 
 # defines
-filter_src = ["Cache.cach","fileState.txt","Label.txt"]
-target_file = filter_src[1]
-
 dir_of_subset = 'E:\\PaddleOCR_Data\\train_data_00_difficult\\'
 dir_of_mainset = 'E:\\PaddleOCR_Data\\train_data\\'
-dir_of_excludeset = 'E:\\PaddleOCR_Data\\train_data_00_excluded\\'
+dir_of_excludeset = 'E:\\PaddleOCR_Data\\train_data_00_main\\'
 filelist_path_of_subset = "E:\\PaddleOCR_Data\\train_data_00_difficult\\filelists.txt"
 filelist_path_of_mainset = "E:\\PaddleOCR_Data\\train_data\\filelists.txt"
-filelist_path_of_excludeset = "E:\\PaddleOCR_Data\\train_data_00_excluded\\filelists.txt"
+filelist_path_of_excludeset = "E:\\PaddleOCR_Data\\train_data_00_main\\filelists.txt"
 filelist_absolute_path_of_subset = "E:\\PaddleOCR_Data\\train_data_00_difficult\\filelists_absolute.txt"
 filelist_absolute_path_of_mainset = "E:\\PaddleOCR_Data\\train_data\\filelists_absolute.txt"
-filelist_absolute_path_of_excludeset = "E:\\PaddleOCR_Data\\train_data_00_excluded\\filelists_absolute.txt"
+filelist_absolute_path_of_excludeset = "E:\\PaddleOCR_Data\\train_data_00_main\\filelists_absolute.txt"
 
 # generage list of files(only include jpg jpeg png)
 def generate_files_array(src_dir):
