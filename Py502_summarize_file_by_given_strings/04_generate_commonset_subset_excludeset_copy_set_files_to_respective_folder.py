@@ -1,3 +1,12 @@
+# -*- coding: utf-8 -*-
+# @Time    : 2024/07/26
+# @Author  : peng song
+# @Email   : songpeng24@msn.com
+# @File    : 04_generate_commonset_subset_excludeset_copy_set_files_to_respective_folder.py
+# @Desc    : 计算集合，拷贝图片
+#          ：找出目标集合和difficult集合的交集，然后把交集内容作为subset，目标集-subset=excludeset
+#          ：最终将图片copy到各个集合的文件夹中
+
 import os
 import shutil
 

@@ -1,4 +1,18 @@
+# -*- coding: utf-8 -*-
+# @Time    : 2024/07/26
+# @Author  : peng song
+# @Email   : songpeng24@msn.com
+# @File    : 02_generate_subset_excludeset_config_fles.py
+# @Desc    : 计算几何，拆分配置文件
+#          ：根据subset文件夹中已有的图片，从总集中筛出三个配置文件对应的line
+#          : 三个文件：Cache.cach fileState.txt Label.txt
+
 import os
+from cal_dataset import find_file_names
+from cal_dataset import read_file_lines
+from cal_dataset import filter_lines_with_keys
+from utils import replace_string_in_file
+from utils import write_lines_to_file
 
 # 从文件夹的图片和三个配置文件，筛出difficult子集的三个配置文件
 # 从总集和difficult子集，筛出非difficult子集
@@ -53,6 +67,7 @@ def read_file_line_by_line_with_strip(file_path):
 
 # write lines to array
 #file_path_of_mainset = dir_of_mainset + target_file
+"""
 def read_file_line_by_line(file_path,is_sorted=False):
     print('\nread file line by line:')
     lines_full = []
@@ -67,8 +82,10 @@ def read_file_line_by_line(file_path,is_sorted=False):
         lines_return = lines_full[:]
     return lines_return
 #lines_full = read_file_line_by_line(file_path_of_mainset)
+"""
 
 # generate file list from a dir
+"""
 def find_files_of_dir(dir):
     set01_files = set()
     image_extensions = ['.jpg', '.jpeg', '.png']
@@ -80,16 +97,17 @@ def find_files_of_dir(dir):
                     relative_path = os.path.relpath(os.path.join(root, file), dir)
                     set01_files.add(file)
     return set01_files
-
+"""
 # found keys is contained in Label.txt, and write into new path
 #file_path_of_subset = dir_of_subset + target_file
 #file_path_of_excludeset = dir_of_excludeset + target_file
+"""
 def filter_lines_with_keys(dir_of_subset,lines_file,file_new,generate_excludeset=False):
     bFoundAll = True
     countOfFound = 0
     #lines_keys = read_file_line_by_line_with_strip(keys_file)
-    lines_keys = find_files_of_dir(dir_of_subset)
-    lines_full = read_file_line_by_line(lines_file,True)
+    lines_keys = find_file_names(dir_of_subset)
+    lines_full = read_file_lines(lines_file,True)
     lines_subset = set()
     lines_excluded = lines_full[:]
     countOfMainSet = len(lines_full)
@@ -123,19 +141,26 @@ def filter_lines_with_keys(dir_of_subset,lines_file,file_new,generate_excludeset
                 
     print(f"main set count:{countOfMainSet},found:{countOfFound},exclude count:{countOfMainSet - countOfFound}")
     return bFoundAll
+"""
 
-# replace string in file
-def replace_string_in_file(file_path,old_string,new_string):
-    # 读取文件内容
-    with open(file_path, 'r', encoding='utf-8') as file:
-        file_content = file.read()
+def filter_lines_with_keys_ex(lines_keys,lines_full,file_new,generate_excludeset=False):
+    lines_subset,lines_excluded = filter_lines_with_keys(lines_full,lines_keys)
+    """
+    with open(file_new, "w", encoding="utf-8") as _file_new:
+        sorted_lines_subset = sorted(lines_subset, key=str.casefold)
+        for line in sorted_lines_subset:
+            _file_new.write(line)
 
-    # 替换字符串
-    new_content = file_content.replace(old_string, new_string)
-
-    # 将修改后的内容写回文件
-    with open(file_path, 'w', encoding='utf-8') as file:
-        file.write(new_content)
+    # generate excludeset file
+    if(generate_excludeset):
+        lines_excluded = sorted(lines_excluded[:], key=str.casefold)
+        with open(file_path_of_excludeset, "w", encoding="utf-8") as _file_new:
+            for line in lines_excluded:
+                _file_new.write(line)            
+    """
+    write_lines_to_file(lines_subset,file_new)
+    if(generate_excludeset):
+        write_lines_to_file(lines_excluded,file_path_of_excludeset)
 
 
 # defines
@@ -147,23 +172,30 @@ dir_name_of_difficult = 'train_data_00_difficult'
 dir_name_of_main = 'train_data_00_main'
 dir_name_of_dot_font = 'train_data_00_dot_font'
 dir_name_of_steel_stamp = 'train_data_00_steel_stamp'
+dir_name_of_Codystar = 'train_data_00_dot_font_Codystar'
+dir_name_of_easy_test = 'train_data_01_easy_test'
+dir_name_of_easy_test_codystar = 'train_data_01_easy_test_02_Codystar'
+dir_name_of_easy_test_03 = 'train_data_01_easy_test_03'
+dir_name_of_dot_font_horizontal = 'train_data_00_dot_font_horizontal'
 # subset
-dir_name_of_mainset = dir_name_of_steel_stamp
-dir_name_of_subset = dir_name_of_steel_stamp + '_subset'
-dir_name_of_excludeset = dir_name_of_steel_stamp + '_excludeset'
+dir_name_of_mainset = dir_name_of_train_data
+dir_name_of_subset = dir_name_of_dot_font_horizontal # + '_subset'
+dir_name_of_excludeset = dir_name_of_easy_test_03 # + '_excludeset'
 # dir
 dir_of_mainset = root_dir + dir_name_of_mainset + '\\'
 dir_of_subset = root_dir + dir_name_of_subset + '\\'
 dir_of_excludeset = root_dir + dir_name_of_excludeset + '\\'
-is_generate_excludeset = True
+is_generate_excludeset = False
 # generate "Cache.cach"
 target_file = filter_src[0]
 file_path_of_mainset = dir_of_mainset + target_file
 file_path_of_subset = dir_of_subset + target_file
 file_path_of_excludeset = dir_of_excludeset + target_file
-bFoundAll = filter_lines_with_keys(dir_of_subset,file_path_of_mainset,file_path_of_subset,is_generate_excludeset)
-if(bFoundAll == True):
-    print("found all keys.")
+#bFoundAll = filter_lines_with_keys(dir_of_subset,file_path_of_mainset,file_path_of_subset,is_generate_excludeset)
+lines_keys = find_file_names(dir_of_subset)
+lines_full = read_file_lines(file_path_of_mainset,True)
+filter_lines_with_keys_ex(lines_keys,lines_full,file_path_of_subset,is_generate_excludeset)
+
 # replace path string
 replace_string_in_file(file_path_of_subset,dir_name_of_mainset,dir_name_of_subset)
 if is_generate_excludeset:
@@ -176,7 +208,10 @@ target_file = filter_src[1]
 file_path_of_mainset = dir_of_mainset + target_file
 file_path_of_subset = dir_of_subset + target_file
 file_path_of_excludeset = dir_of_excludeset + target_file
-bFoundAll = filter_lines_with_keys(dir_of_subset,file_path_of_mainset,file_path_of_subset,is_generate_excludeset)
+#bFoundAll = filter_lines_with_keys(dir_of_subset,file_path_of_mainset,file_path_of_subset,is_generate_excludeset)
+lines_keys = find_file_names(dir_of_subset)
+lines_full = read_file_lines(file_path_of_mainset,True)
+filter_lines_with_keys_ex(lines_keys,lines_full,file_path_of_subset,is_generate_excludeset)
 # replace path string
 replace_string_in_file(file_path_of_subset,dir_name_of_mainset,dir_name_of_subset)
 if is_generate_excludeset:
@@ -187,7 +222,10 @@ target_file = filter_src[2]
 file_path_of_mainset = dir_of_mainset + target_file
 file_path_of_subset = dir_of_subset + target_file
 file_path_of_excludeset = dir_of_excludeset + target_file
-bFoundAll = filter_lines_with_keys(dir_of_subset,file_path_of_mainset,file_path_of_subset,is_generate_excludeset)
+#bFoundAll = filter_lines_with_keys(dir_of_subset,file_path_of_mainset,file_path_of_subset,is_generate_excludeset)
+lines_keys = find_file_names(dir_of_subset)
+lines_full = read_file_lines(file_path_of_mainset,True)
+filter_lines_with_keys_ex(lines_keys,lines_full,file_path_of_subset,is_generate_excludeset)
 # replace path string
 replace_string_in_file(file_path_of_subset,dir_name_of_mainset,dir_name_of_subset)
 if is_generate_excludeset:

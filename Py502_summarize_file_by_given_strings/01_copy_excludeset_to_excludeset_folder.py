@@ -1,3 +1,11 @@
+# -*- coding: utf-8 -*-
+# @Time    : 2024/07/26
+# @Author  : peng song
+# @Email   : songpeng24@msn.com
+# @File    : 01_copy_excludeset_to_excludeset_folder.py
+# @Desc    : 计算集合，拷贝图片
+#          ：从总集中刨除subset已有的图片，将剩下的图片拷贝到excludeset中
+
 import os
 import shutil
 

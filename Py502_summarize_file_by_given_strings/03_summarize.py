@@ -1,3 +1,11 @@
+# -*- coding: utf-8 -*-
+# @Time    : 2024/07/26
+# @Author  : peng song
+# @Email   : songpeng24@msn.com
+# @File    : 03_summarize.py
+# @Desc    : 统计数量
+#          ：统计总集的数量，subset的数量，excludeset的数量
+
 import os
 
 def count_image_files(folder_path):
