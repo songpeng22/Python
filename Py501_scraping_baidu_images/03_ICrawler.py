@@ -107,9 +107,9 @@ myBaiducrawler = MyBaiduCrawler(downloader_cls=MyImageDownloader,
                             parser_threads=4, 
                             downloader_threads=4, 
                             storage=my_storage)
-keyword_head= '长春新碱'
+keyword_head= '地氯雷他定'
 number = 50
-"""
+
 myBingcrawler.crawl(keyword=keyword_head + ' 生产日期', 
                      max_num=number)
 myGooglecrawler.crawl(keyword=keyword_head + ' 生产日期', 
@@ -131,7 +131,7 @@ myGooglecrawler.crawl(keyword=keyword_head + ' 批号',
 myBaiducrawler.crawl(keyword=keyword_head + ' 批号', 
                      max_num=number)
 """                     
-keyword_head= 'Vincristine'
+keyword_head= 'Desloratadine'
 myBingcrawler.crawl(keyword=keyword_head + ' LOT', 
                      max_num=number)
 myGooglecrawler.crawl(keyword=keyword_head + ' LOT', 
@@ -144,7 +144,7 @@ myGooglecrawler.crawl(keyword=keyword_head + ' MFD',
                      max_num=number)
 myBaiducrawler.crawl(keyword=keyword_head + ' MFD', 
                      max_num=number)
-
+"""
 
 
 """

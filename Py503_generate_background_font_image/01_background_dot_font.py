@@ -400,12 +400,13 @@ image_path_03 = "E:\\PaddleOCR_Data\\train_data_01_easy_test_03_BPdotsUnicase\\"
 image_path_04 = "E:\\PaddleOCR_Data\\train_data_00_dot_font_test\\"
 image_path_05 = "E:\\PaddleOCR_Data\\train_data_01_easy_test_04_SFTelegraphic\\"
 image_path_06 = "E:\\PaddleOCR_Data\\train_data_01_easy_test_05_Collect_018\\"
+image_path_07 = "E:\\PaddleOCR_Data\\train_data_01_code_insight\\"
 
-for i in range(1): #三种格式 200  #2024/05/01 120
+for i in range(3): #三种格式 200  #2024/05/01 120
     # 在这里执行你的代码
     random_path_and_position = get_random_path_and_position(background_and_positions)
     background = random_path_and_position["background"]
     position = random_path_and_position["position"]
     #generate_random_font_image(image_path_01,background_02,position_x,position_y)
-    generate_random_font_image(image_path_06,background,position["x"],position["y"])
+    generate_random_font_image(image_path_07,background,position["x"],position["y"])
     pass

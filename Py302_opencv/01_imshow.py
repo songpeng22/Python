@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+# @Time    : 2024/07/01
+# @Author  : peng song
+# @Email   : songpeng24@msn.com
+# @File    : Py302_opencv\01_imshow.py
+# @Desc    : 读取图片，并用pyplot显示出来
+
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
