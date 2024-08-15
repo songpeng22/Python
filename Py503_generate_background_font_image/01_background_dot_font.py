@@ -270,25 +270,6 @@ def generate_font_image(background,position_x,position_y,font_height,date,image_
     date02 = date + relativedelta(years=2)
     text_of_production_date = date01.strftime( format_01 )
     text_of_expiry_date = date02.strftime( format02 )
-    print(f"text_of_production_date:{text_of_production_date}")
-    print(f"text_of_expiry_date:{text_of_expiry_date}")
-    # font
-    font_path = font_paths[0]
-    font_size = get_fontsize_from_fontheight(font_path,font_height,text_of_production_date)
-    font_01 = ImageFont.truetype(font_path, font_size)
-    print(f"font_path:{font_path}")
-    """
-    """
-    font_path_ext_01 = font_paths[1]
-    font_size_ext_01 = get_fontsize_from_fontheight(font_path_ext_01,font_height,text_of_production_date)
-    font_ext_01 = ImageFont.truetype(font_path_ext_01, font_size_ext_01)
-    print(f"font_path_font_path_ext_01ext:{font_path_ext_01}")
-
-    font_path_ext_02 = font_paths[2]
-    font_size_ext_02 = get_fontsize_from_fontheight(font_path_ext_02,font_height,text_of_production_date)
-    font_ext_02 = ImageFont.truetype(font_path_ext_02, font_size_ext_02)
-    print(f"font_path_ext_02:{font_path_ext_02}")
-    
     # serial text
     serial_text = generate_random_string(probabilities) #generate_random_string()
     # specific text
@@ -296,12 +277,86 @@ def generate_font_image(background,position_x,position_y,font_height,date,image_
     #text_of_production_date = "2020/02/15"
     #text_of_expiry_date = "2023/01/"
     #print(f"serial_text:{serial_text}")
-    # draw
+    # text list
+    text_list = []
+    text_list.append(serial_text)
+    text_list.append(text_of_production_date)
+    text_list.append(text_of_expiry_date)
+    #for text in text_list:
+    #    print(text)
+    print(f"serial_text:{serial_text}")
+    print(f"text_of_production_date:{text_of_production_date}")
+    print(f"text_of_expiry_date:{text_of_expiry_date}")
+    
+    # font_path list length
+    font_paths_len = len(font_paths)
+    print(f"font_paths_len:{font_paths_len}")
+    # font list
+    font_list = []
+    for font_path in font_paths:
+        print(f"font_path:{font_path}")
+        font_size = get_fontsize_from_fontheight(font_path,font_height,text_of_production_date)
+        font = ImageFont.truetype(font_path, font_size)
+        font_list.append(font)
+        
+    # font
+    """
+    font_path = font_paths[0]
+    font_size = get_fontsize_from_fontheight(font_path,font_height,text_of_production_date)
+    font_01 = ImageFont.truetype(font_path, font_size)
+    print(f"font_path:{font_path}")
+
+    font_path_ext_01 = font_paths[1]
+    font_size_ext_01 = get_fontsize_from_fontheight(font_path_ext_01,font_height,text_of_production_date)
+    font_ext_01 = ImageFont.truetype(font_path_ext_01, font_size_ext_01)
+    print(f"font_path_font_path_ext_01ext:{font_path_ext_01}")
+    
+    font_path_ext_02 = font_paths[2]
+    font_size_ext_02 = get_fontsize_from_fontheight(font_path_ext_02,font_height,text_of_production_date)
+    font_ext_02 = ImageFont.truetype(font_path_ext_02, font_size_ext_02)
+    print(f"font_path_ext_02:{font_path_ext_02}")
+    """
+    
+    # position
     offset = 60
     position_01_x = position_x
     position_01_y = position_y
     position_01 = (position_01_x, position_01_y)
+    position_02_x = position_x
+    position_02_y = position_y + offset
+    position_02 = (position_02_x, position_02_y)
+    position_03_x = position_x
+    position_03_y = position_y + offset*2
+    position_03 = (position_03_x, position_03_y)
+    # position list
+    position_list = []
+    position_list.append(position_01)
+    position_list.append(position_02)
+    position_list.append(position_03)
+
+    # draw
+    """
+    """
+    for (text,position) in zip(text_list,position_list):
+        for char in text:
+            if char in "":  # 特定数字
+                font = font_list[1] if len(font_list) > 1 else font_list[0]
+            elif char in "012358/":
+                font = font_list[0] if len(font_list) > 1 else font_list[0]
+            else:
+                font = font_list[0]
+            # 计算字符的边界框
+            bbox = draw.textbbox(position, char, font=font)
+            # 绘制字符
+            draw.text(position, char, font=font, fill='black')
+            # 更新 x 坐标
+            position = (position[0] + bbox[2] - bbox[0],position[1])  # 使用边界框宽度更新位置
+    
     #draw.text(position_01, serial_text, font=font_normal, fill="black")
+    """
+    font_01 = font_list[0]
+    font_ext_01 = font_list[1]
+    font_ext_02 = font_list[2]
     for char in serial_text:
         if char in "":  # 特定数字
             font = font_ext_01
@@ -309,7 +364,7 @@ def generate_font_image(background,position_x,position_y,font_height,date,image_
             font = font_ext_02
         else:
             font = font_01
-        draw.text((position_01_x,position_01_y), char, font=font, fill="black")
+        #draw.text((position_01_x,position_01_y), char, font=font, fill="black")
         # 计算字符的边界框
         bbox = draw.textbbox((position_01_x, position_01_y), char, font=font)
         # 绘制字符
@@ -328,7 +383,7 @@ def generate_font_image(background,position_x,position_y,font_height,date,image_
             font = font_ext_02
         else:
             font = font_01
-        draw.text((position_02_x,position_02_y), char, font=font, fill="black")
+        #draw.text((position_02_x,position_02_y), char, font=font, fill="black")
         # 计算字符的边界框
         bbox = draw.textbbox((position_02_x, position_02_y), char, font=font)
         # 绘制字符
@@ -347,14 +402,14 @@ def generate_font_image(background,position_x,position_y,font_height,date,image_
             font = font_ext_02
         else:
             font = font_01
-        draw.text((position_03_x,position_03_y), char, font=font, fill="black")
+        #draw.text((position_03_x,position_03_y), char, font=font, fill="black")
         # 计算字符的边界框
         bbox = draw.textbbox((position_03_x, position_03_y), char, font=font)
         # 绘制字符
         draw.text((position_03_x, position_03_y), char, font=font, fill='black')
         # 更新 x 坐标
         position_03_x += bbox[2] - bbox[0]  # 使用边界框宽度更新位置
-    
+    """
     # show image
     """
     
@@ -393,6 +448,7 @@ def generate_random_font_image(image_path,background,position_x,position_y):
     print(f"ext_font_path_01:{ext_font_path_01}")
     print(f"ext_font_path_02:{ext_font_path_02}")
     generate_font_image(background,position_x,position_y,font_height,generate_random_date(),image_path,*[random_font_path,ext_font_path_01,ext_font_path_02])
+    #generate_font_image(background,position_x,position_y,font_height,generate_random_date(),image_path,*[random_font_path])
 
 image_path_01 = "E:\\PaddleOCR_Data\\train_data_00_dot_font_test\\"
 image_path_02 = "E:\\PaddleOCR_Data\\train_data_01_easy_test\\"
@@ -401,12 +457,13 @@ image_path_04 = "E:\\PaddleOCR_Data\\train_data_00_dot_font_test\\"
 image_path_05 = "E:\\PaddleOCR_Data\\train_data_01_easy_test_04_SFTelegraphic\\"
 image_path_06 = "E:\\PaddleOCR_Data\\train_data_01_easy_test_05_Collect_018\\"
 image_path_07 = "E:\\PaddleOCR_Data\\train_data_01_code_insight\\"
+image_path_08 = "E:\\PaddleOCR_Data\\train_data_01_line_close\\"
 
-for i in range(3): #三种格式 200  #2024/05/01 120
+for i in range(4): #三种格式 200  #2024/05/01 120
     # 在这里执行你的代码
     random_path_and_position = get_random_path_and_position(background_and_positions)
     background = random_path_and_position["background"]
     position = random_path_and_position["position"]
     #generate_random_font_image(image_path_01,background_02,position_x,position_y)
-    generate_random_font_image(image_path_07,background,position["x"],position["y"])
+    generate_random_font_image(image_path_08,background,position["x"],position["y"])
     pass
