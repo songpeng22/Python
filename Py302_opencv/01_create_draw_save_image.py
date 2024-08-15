@@ -15,6 +15,19 @@ def numpyLib_create_image_draw_save():
     image = np.zeros((512,512,3), np.uint8)
     # Draw a diagonal blue line with thickness of 5 px
     cv2.line(image,(0,0),(300,300),(255,0,0),5)
+    # Draw polygon
+    # 定义多边形的顶点
+    points = np.array([[200, 50], [100, 100], [300, 100]], np.int32)
+    # Reshape the points for fillPoly
+    #-1: 表示自适应数量，OpenCV 将根据提供的点数量自动调整。
+    #1: 表示每个多边形由一个轮廓组成。
+    #2: 表示每个点有两个坐标（x 和 y）。
+    pts = points.reshape((-1, 1, 2))
+    # 设置多边形的颜色为绿色
+    color = (0, 255, 0)
+    # Fill the polygon
+    #cv2.fillPoly(image, [pts], color)
+    cv2.fillPoly(image, [pts], 1.0)
     #保存
     image_path = 'C:\\Users\\songp\\Desktop\\test\\test01.jpg'
     write_image_to(image,image_path)

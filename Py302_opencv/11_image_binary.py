@@ -1,5 +1,13 @@
+# -*- coding: utf-8 -*-
+# @Time    : 2024/08/11
+# @Author  : peng song
+# @Email   : songpeng24@msn.com
+# @File    : Py302_opencv\11_image_binary.py
+# @Desc    : 转灰度图像，二值化，生成二值图
+
 import cv2
 import matplotlib.pyplot as plt
+import os
 
 """
 二值图像：只有黑色和白色两种颜色的图像。 每个像素点可以用 0/1 表示,0 表示黑色,1 表示白色。
@@ -12,12 +20,15 @@ cv.THRESH_TOZERO        表示大于阈值时不变(保持原色),否则置 0。
 cv.THRESH_TOZERO_INV    表示大于阈值时置 0,否则不变(保持原色)。
 cv.THRESH_OTSU          表示使用 OTSU 算法选择阈值。
 """
-img = cv2.imread('..\images\Collect_057.png',0) #直接读为灰度图像
+image_path = os.path.dirname(__file__) + "\\" + '..\images\Collect_057.png'
+img = cv2.imread(image_path,0) #直接读为灰度图像
 ret,thresh1 = cv2.threshold(img,60,255,cv2.THRESH_BINARY)
 ret,thresh2 = cv2.threshold(img,127,255,cv2.THRESH_BINARY_INV)
 ret,thresh3 = cv2.threshold(img,127,255,cv2.THRESH_TRUNC)
 ret,thresh4 = cv2.threshold(img,127,255,cv2.THRESH_TOZERO)
 ret,thresh5 = cv2.threshold(img,127,255,cv2.THRESH_TOZERO_INV)
+# 应用OTSU阈值法
+#ret, thresh5 = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 titles = ['img','BINARY','BINARY_INV','TRUNC','TOZERO','TOZERO_INV']
 images = [img,thresh1,thresh2,thresh3,thresh4,thresh5]
 for i in range(6):
