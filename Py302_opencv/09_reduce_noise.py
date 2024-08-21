@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+# @Time    : 2024/08/15
+# @Author  : peng song
+# @Email   : songpeng24@msn.com
+# @File    : Py302_opencv\09_reduce_noise.py
+# @Desc    : 滤波降噪
+
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
