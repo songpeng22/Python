@@ -41,18 +41,31 @@ def get_fontsize_from_fontheight(font_path, target_height, text):
 
     return fontsize - 1
 
+def get_choice(list = [0,1,2,3], weights = [5,3,1,1], manual_choice=-1):
+    return random.choices(list,weights)[0] if manual_choice == -1 else manual_choice
+
+# 生成所有choices，然后再shuffle
+# 这样比例是确定的，不会像random随机那样有可能权重弱的元素一次都没有出现
+def get_choice_list_by_ratio(elements = [0,1,2,3], ratios = [5,3,1,1], total_count = 0):
+    result = []
     
-def get_choice():
-    list = []
-    list.append(0)
-    list.append(1)
-    list.append(2)
-    list.append(3)
-
-    #weights = [5,3,1,1]
-    weights = [5,3,1,1]
-
-    return random.choices(list,weights)[0]
+    # 计算比例的总和
+    total_ratios = sum(ratios)
+    
+    # 计算每个元素的出现次数
+    for element, ratio in zip(elements, ratios):
+        # 计算当前元素应该出现的次数
+        count = int(ratio / total_ratios * total_count)
+        result.extend([element] * count)
+    
+    # 处理可能的总数不足的情况
+    while len(result) < total_count:
+        # 依次添加元素直到达到目标大小
+        for element in elements:
+            if len(result) < total_count:
+                result.append(element)
+    
+    return result
 
 def get_format(index):
     format_list_01 = []
@@ -83,19 +96,26 @@ def generate_random_string():
     # 拼接并返回最终字符串
     return letters + numbers
 
-def generate_random_string(letter_probabilities):
-    # 生成前四位大写字母
+def generate_random_charactor_string(letter_probabilities):
+    # 生成四位大写字母
     letters = random.choices(
         population=list(letter_probabilities.keys()), 
         weights=list(letter_probabilities.values()), 
-        k=0
+        k=2
     )
     
-    # 生成后四位数字
-    numbers = random.choices(string.digits, k=8)
-    
-    # 拼接结果
-    return ''.join(letters) + ''.join(numbers)
+    return ''.join(letters)
+
+def generate_random_number_string():
+    numbers = random.choices(string.digits, k=4)
+    return ''.join(numbers)
+
+def generate_random_time_string():
+    hours = random.randint(0, 23)   # 随机生成小时
+    minutes = random.randint(0, 59)  # 随机生成分钟
+    #seconds = random.randint(0, 59)  # 随机生成秒钟
+    #return f"{hours:02}:{minutes:02}:{seconds:02}"  # 格式化为 HH:MM:SS
+    return f"{hours:02}:{minutes:02}"
 
 # 定义每个大写字母的出现概率
 probabilities = {
@@ -126,6 +146,13 @@ probabilities = {
     'Y': 2,
     'Z': 1,           
 }
+
+def generate_random_string():
+    string_01 = generate_random_charactor_string(probabilities)
+    string_02 = generate_random_number_string()
+    string_03 = generate_random_time_string()
+
+    return ''.join(string_01) + ''.join(string_03)
 
 # Load a TrueType or OpenType font file, and set the font size
 font_name_Codystar_Regular = "Codystar-Regular-2.ttf"
@@ -161,9 +188,6 @@ position_y = 10
 BPdotsUnicase_x = 20
 codestar_y = 60
 
-font_size = 36
-font_height = 24
-
 column_01_x = 100
 row_01_y = 60
 column_02_x = 150
@@ -182,36 +206,39 @@ position_03_y = codestar_y
 position_x = position_03_x
 position_y = position_03_y
 
+weight_00 = 0
+weight_01 = 1
+weight = weight_00
 background_and_positions = [
     {
         "background": "E:\\PaddleOCR_Images_Background\\Background_003.jpg",
         "position": {"x": column_01_x, "y": row_01_y},
-        "weight": 1
+        "weight": weight
     },
     {
         "background": "E:\\PaddleOCR_Images_Background\\Background_004_sub01.jpg",
         "position": {"x": column_03_x, "y": row_03_y},
-        "weight": 1
+        "weight": weight
     },
     {
         "background": "E:\\PaddleOCR_Images_Background\\Background_007_sub01.jpg",
         "position": {"x": column_01_x, "y": row_01_y},
-        "weight": 1
+        "weight": weight
     },
     {
         "background": "E:\\PaddleOCR_Images_Background\\Background_008_sub01.jpg",
         "position": {"x": column_02_x, "y": row_02_y},
-        "weight": 1
+        "weight": 100
     },
     {
         "background": "E:\\PaddleOCR_Images_Background\\Background_012_sub01.jpg",
         "position": {"x": column_02_x, "y": row_02_y},
-        "weight": 1
+        "weight": weight
     },
     {
         "background": "E:\\PaddleOCR_Images_Background\\Background_013_sub01.jpg",
         "position": {"x": column_01_x, "y": row_01_y},
-        "weight": 1
+        "weight": weight
     },
     {
         "background": "E:\\PaddleOCR_Images_Background\\Background_015_sub01.jpg", #green background
@@ -221,7 +248,7 @@ background_and_positions = [
     {
         "background": "E:\\PaddleOCR_Images_Background\\Background_017.jpg",
         "position": {"x": column_02_x, "y": row_02_y},
-        "weight": 1
+        "weight": weight
     },
     {
         "background": "E:\\PaddleOCR_Images_Background\\Background_019_sub01.jpg", #green background
@@ -231,12 +258,12 @@ background_and_positions = [
     {
         "background": "E:\\PaddleOCR_Images_Background\\Background_031_sub012.png",
         "position": {"x": column_01_x, "y": row_01_y},
-        "weight": 1
+        "weight": weight
     },
     {
         "background": "E:\\PaddleOCR_Images_Background\\Background_041_sub02.jpg",
         "position": {"x": column_04_x, "y": row_03_y},
-        "weight": 1
+        "weight": weight
     },
     {
         "background": "E:\\PaddleOCR_Images_Background\\Background_051_sub01.jpg",
@@ -260,21 +287,24 @@ def get_random_path_and_position(data):
 
 # 生成字体文件
 def generate_font_image(background,position_x,position_y,font_height,date,image_path,*font_paths):
+    global g_tag
+    global g_offset
     image = Image.open(background)
     draw = ImageDraw.Draw(image)
     
     # date text
-    choice = get_choice()
+    #choice = get_choice(manual_choice=2) # default: random choce, or manual choice 0~3
+    choice = get_choice() # default: random choce, or manual choice 0~3
     format_01,format02 = get_format(choice)
     date01 = date
     date02 = date + relativedelta(years=2)
     text_of_production_date = date01.strftime( format_01 )
     text_of_expiry_date = date02.strftime( format02 )
     # serial text
-    serial_text = generate_random_string(probabilities) #generate_random_string()
+    serial_text = generate_random_string()
     # specific text
-    #serial_text = "20110832"
-    #text_of_production_date = "2020/02/15"
+    #serial_text = "04:130753"
+    #text_of_production_date = "20240419B"
     #text_of_expiry_date = "2023/01/"
     #print(f"serial_text:{serial_text}")
     # text list
@@ -293,9 +323,10 @@ def generate_font_image(background,position_x,position_y,font_height,date,image_
     print(f"font_paths_len:{font_paths_len}")
     # font list
     font_list = []
-    for font_path in font_paths:
+    for font_path,text in zip(font_paths,text_list):
         print(f"font_path:{font_path}")
-        font_size = get_fontsize_from_fontheight(font_path,font_height,text_of_production_date)
+        font_size = get_fontsize_from_fontheight(font_path,font_height,text)
+        print(f"font_size:{font_size}")
         font = ImageFont.truetype(font_path, font_size)
         font_list.append(font)
         
@@ -318,7 +349,7 @@ def generate_font_image(background,position_x,position_y,font_height,date,image_
     """
     
     # position
-    offset = 60
+    offset = g_offset #80 #36 #25
     position_01_x = position_x
     position_01_y = position_y
     position_01 = (position_01_x, position_01_y)
@@ -337,14 +368,48 @@ def generate_font_image(background,position_x,position_y,font_height,date,image_
     # draw
     """
     """
+    # choose font, font depends on which char per image
+    font_dict = {char: font_list[0] for char in string.ascii_uppercase + string.digits + "./:" + "年月日"}
+    # font[0]
+    font_dict_tmp = {char: font_list[0] for char in "0345"}
+    font_dict.update(font_dict_tmp)
+    # font[1]
+    font_tmp = font_list[1] if len(font_list) > 1 else font_list[0]
+    font_dict_tmp = {char: font_tmp for char in "127"}
+    font_dict.update(font_dict_tmp)
+    # font[2]
+    font_tmp = font_list[2] if len(font_list) > 1 else font_list[0]
+    font_dict_tmp = {char: font_tmp for char in "69"}
+    font_dict.update(font_dict_tmp)
+    # random from font[0] and font[1]
+    if( len(font_list) >= 2 ):
+        new_font_list = [font_list[0],font_list[1]]
+        font_tmp = random.choice(new_font_list)
+        font_dict_tmp = {char: font_tmp for char in "AW"}
+        font_dict.update(font_dict_tmp)
+    # random from font[0] font[1] and font[2]
+    if( len(font_list) >= 3 ):
+        font_tmp = random.choice(font_list)
+        font_dict_tmp = {char: font_tmp for char in "K年月日"}
+        font_dict.update(font_dict_tmp)
+
+    font_dict.update(font_dict_tmp)
     for (text,position) in zip(text_list,position_list):
         for char in text:
-            if char in "":  # 特定数字
+            font = font_dict[char]
+            """
+            if char in "0345":
+                font = font_list[0]
+            elif char in "127":  # 特定数字
                 font = font_list[1] if len(font_list) > 1 else font_list[0]
-            elif char in "012358/":
-                font = font_list[0] if len(font_list) > 1 else font_list[0]
+            elif char in "69": #"012358/"
+                font = font_list[2] if len(font_list) > 1 else font_list[0]
+            elif char in "W":
+                new_font_list = [font_list[0],font_list[1]]
+                font = random.choice(new_font_list)
             else:
                 font = font_list[0]
+            """
             # 计算字符的边界框
             bbox = draw.textbbox(position, char, font=font)
             # 绘制字符
@@ -418,9 +483,11 @@ def generate_font_image(background,position_x,position_y,font_height,date,image_
     plt.show()
     cv2.waitKey(0)
     """
+    # image name
+    tag = g_tag
     basename = os.path.basename(font_path)
     date_text = date.strftime('%Y_%m_%d')
-    image_name = basename + "_" + date_text + ".png"
+    image_name = basename + "_" + tag + "_" + date_text + ".png"
     print(f"image_name:{image_name}")
     image_full_path = image_path +  image_name
     if not os.path.exists(image_full_path):
@@ -429,7 +496,7 @@ def generate_font_image(background,position_x,position_y,font_height,date,image_
     else:
         print(f"文件:{image_full_path} 已存在，跳过")
 
-def generate_random_font_image(image_path,background,position_x,position_y):
+def generate_random_font_image(image_path,background,position_x,position_y,font_height):
     font_root_path = "E:\\PaddleOCR_fonts\\"
     font_ext_path = "E:\PaddleOCR_fonts\\font_ext\\"
     random_font_name = get_random_file_name(font_root_path)
@@ -447,9 +514,17 @@ def generate_random_font_image(image_path,background,position_x,position_y):
     print(f"random_font_path:{random_font_path}")
     print(f"ext_font_path_01:{ext_font_path_01}")
     print(f"ext_font_path_02:{ext_font_path_02}")
-    generate_font_image(background,position_x,position_y,font_height,generate_random_date(),image_path,*[random_font_path,ext_font_path_01,ext_font_path_02])
-    #generate_font_image(background,position_x,position_y,font_height,generate_random_date(),image_path,*[random_font_path])
+    font_list = []
+    font_list.append(random_font_path)
+    if os.path.exists(ext_font_path_01):
+        font_list.append(ext_font_path_01)
+    if os.path.exists(ext_font_path_02):
+        font_list.append(ext_font_path_02)
+    #font_list = [random_font_path,ext_font_path_01,ext_font_path_02]
+    #generate_font_image(background,position_x,position_y,font_height,generate_random_date(),image_path,*[random_font_path,ext_font_path_01,ext_font_path_02])
+    generate_font_image(background,position_x,position_y,font_height,generate_random_date(),image_path,*font_list)
 
+# font dir
 image_path_01 = "E:\\PaddleOCR_Data\\train_data_00_dot_font_test\\"
 image_path_02 = "E:\\PaddleOCR_Data\\train_data_01_easy_test\\"
 image_path_03 = "E:\\PaddleOCR_Data\\train_data_01_easy_test_03_BPdotsUnicase\\"
@@ -458,12 +533,22 @@ image_path_05 = "E:\\PaddleOCR_Data\\train_data_01_easy_test_04_SFTelegraphic\\"
 image_path_06 = "E:\\PaddleOCR_Data\\train_data_01_easy_test_05_Collect_018\\"
 image_path_07 = "E:\\PaddleOCR_Data\\train_data_01_code_insight\\"
 image_path_08 = "E:\\PaddleOCR_Data\\train_data_01_line_close\\"
+image_path_09 = "E:\\PaddleOCR_Data\\train_data_01_easy_test_07_food503\\"
 
-for i in range(4): #三种格式 200  #2024/05/01 120
+# font name tag
+g_tag = "07"
+
+# font size/height
+#font_size = 36
+font_height = 56 #35 #24
+g_offset = 80 #80 #36 #25
+# number
+cycle_num = 1
+for i in range(cycle_num): #三种格式 200  #2024/05/01 120
     # 在这里执行你的代码
     random_path_and_position = get_random_path_and_position(background_and_positions)
     background = random_path_and_position["background"]
     position = random_path_and_position["position"]
     #generate_random_font_image(image_path_01,background_02,position_x,position_y)
-    generate_random_font_image(image_path_08,background,position["x"],position["y"])
+    generate_random_font_image(image_path_09,background,position["x"],position["y"],font_height)
     pass
