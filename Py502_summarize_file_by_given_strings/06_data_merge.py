@@ -28,5 +28,9 @@ dir_of_set04 = 'E:\\PaddleOCR_Data\\train_data_00_difficult\\'
 dir_of_set05 = 'E:\\PaddleOCR_Data\\train_data_00_dot_font_Codystar\\'
 dir_of_set06 = 'E:\\PaddleOCR_Data\\train_data_01_easy_test_02_Codystar\\'
 dir_of_set07 = 'E:\\PaddleOCR_Data\\train_data_01_easy_test_03\\'
+dir_of_set08 = 'E:\\PaddleOCR_Data\\train_data_01_easy_test_05_Collect_018\\'
+dir_of_set09 = 'E:\\PaddleOCR_Data\\train_data_01_easy_test_07_food503\\'
+dir_of_set10 = 'E:\\PaddleOCR_Data\\train_data_02_merge_01_Collect_018_food503\\'
+dir_of_target = dir_of_set10
 if __name__ == '__main__':
-    data_merge(dir_of_set07,dir_of_set02,dir_of_set06)
+    data_merge(dir_of_target,dir_of_set08,dir_of_set09)

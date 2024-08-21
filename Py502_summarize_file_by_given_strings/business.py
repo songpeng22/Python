@@ -59,7 +59,4 @@ def data_merge(dir_tar,*dir_srcs):
             file_path_of_src = dir_src + config_file
             file_path_of_srcs.append(file_path_of_src)
         merge_config_files(file_path_of_target,*file_path_of_srcs)
-
-
-    
     

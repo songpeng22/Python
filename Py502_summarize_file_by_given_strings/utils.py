@@ -50,14 +50,24 @@ def merge_config_files(output_file, *input_files):
         output_file (str): The path to the output file.
         *input_files (str): The paths to the input text files.
     """
-    print(f"open output_file:{output_file}")
+    print(f"open output_file: {output_file}")
+    output_dir_name = os.path.dirname(output_file)
+    print(f"output_dir_name: {output_dir_name}")
+    output_base_name = os.path.basename(output_dir_name)
+    print(f"output_base_name: {output_base_name}")
     with open(output_file, 'w', encoding='utf-8') as output_f:
         for input_file in input_files:
-            print(f"open input_file:{input_file}")
+            print(f"open input_file: {input_file}")
+            input_dir_name = os.path.dirname(input_file)
+            print(f"input_dir_name: {input_dir_name}")
+            input_base_name = os.path.basename(input_dir_name)
+            print(f"input_base_name: {input_base_name}")
             with open(input_file, 'r', encoding='utf-8') as input_f:
                 #content = input_f.read().strip()
                 #if content:
                 content = input_f.read()
+                # replace original dir name in config file to merged dir name
+                content = content.replace(input_base_name,output_base_name)
                 output_f.write(content)
                 #output_f.write('\n\n')  # Add a separator between files
 

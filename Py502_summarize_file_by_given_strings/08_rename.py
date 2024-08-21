@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+# @Time    : 2024/08/16
+# @Author  : peng song
+# @Email   : songpeng24@msn.com
+# @File    : Py502_summarize_file_by_given_strings\08_rename.py
+# @Desc    : 文件夹内，批量文件重命名
 
 import os
 
@@ -38,7 +44,7 @@ def rename_files_in_folder(folder_path, match_in_old_name, string_of_replace_wit
 if __name__ == '__main__':
     print(f"rename")
     # 使用示例
-    folder_path = "E:\\PaddleOCR_Data\\train_data_00_difficult\\"
+    folder_path = "E:\\PaddleOCR_Data\\train_data_01_easy_test_05_Collect_018\\"
     match_in_old_name = input("请输入要匹配的字符串: ")
     string_of_replace_with = input("请输入替换字符串: ")
     rename_files_in_folder(folder_path, match_in_old_name, string_of_replace_with)

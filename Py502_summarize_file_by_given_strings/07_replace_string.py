@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+# @Time    : 2024/08/16
+# @Author  : peng song
+# @Email   : songpeng24@msn.com
+# @File    : Py502_summarize_file_by_given_strings\07_replace_string.py
+# @Desc    : 替换字符串
+
 import os
 from utils import replace_string_in_file
 
