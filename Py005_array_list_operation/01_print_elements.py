@@ -11,6 +11,8 @@
 #          : tuple = () or 
 #          : dict = {}
 
+import string
+
 # array
 print(f"array example:")
 import array as arr
@@ -31,7 +33,15 @@ print(myList[0]) # output --> 9
 print(myList[-3]) # output --> hello
 print(myList[:2]) # output --> [9, 'hello']
 print(myList) # output --> [9, 'hello', 2, 'python']
-
+# quick list
+newList = [1] * 3
+print(f"newList:")
+print(newList)
+print(f"sum of list:{sum(newList)}")
+# extend list
+myList.extend(newList)
+print(f"myList extend:")
+print(myList)
 
 testList = []
 print(f"type of testList is:{type(testList)}")
@@ -105,3 +115,21 @@ print("Dictionary", d)
 # Removing key-value pair
 del d[10]
 print("Dictionary", d)
+
+#
+font_list = ['Arial', 'Times New Roman', 'Verdana']
+font_dict = {char: font_list[0] for char in string.ascii_uppercase + string.digits + "./年月日"}
+font_dict['A'] = 'Times New Roman'
+print(f"print all:")
+print(font_dict)
+font_dict['B'] = 'Verdana'
+print(f"\nprint all:")
+print(font_dict)
+print("")
+print(font_dict['B'])
+
+# 其中多个key，快速赋值
+print(f"\nassign values:")
+font_dict_tmp = {char: 'Verdana' for char in "DEF"}
+font_dict.update(font_dict_tmp)
+print(font_dict)
