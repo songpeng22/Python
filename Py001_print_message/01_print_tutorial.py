@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-# @Time    : 2024/07/01
+# @Time    : 2024/06/14
 # @Author  : peng song
 # @Email   : songpeng24@msn.com
-# @File    : Py302_opencv\01_imshow.py
+# @File    : Py001_print_message\01_print_tutorial.py
 # @Desc    : main()函数/print的用法/print正常输出的同时，输出到文件
+
 import glob
 import os
 import time
