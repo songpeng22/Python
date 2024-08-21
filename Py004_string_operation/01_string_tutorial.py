@@ -1,24 +1,37 @@
+# -*- coding: utf-8 -*-
+# @Time    : 2024/07/03
+# @Author  : peng song
+# @Email   : songpeng24@msn.com
+# @File    : Py004_string_operation\01_string_tutorial.py
+# @Desc    : string tutorial
+
 import os
 """
 """
 
-string = "hello"
-# Concatenating string
+# string append - Concatenating string
 print("Concatenating string:")
+string = "hello"
 str1 = string + "world"
 print(str1)
 
-# check if conains substring
+# substring - check if conains substring
 print("\ncheck if conains substring:")
 fullstring = "StackAbuse"
 substring = "tack"
-
 if fullstring.find(substring) != -1:
     print("Found!")
 else:
     print("Not found!")
 
-# split string
+# string replace
+print("\nstring replace:")
+string = "hello world"
+print(f"string replace before:{string}")
+string = string.replace("world","python")
+print(f"string replace after:{string}")
+
+# string split 
 filename = "abc.jpg"
 extension = filename.split('.')
 print("\nextension list after split:")
